@@ -8,6 +8,7 @@ import { GlobalStyled } from "./GlobalStyled";
 import { ErrorPage } from "./pages/ErrorPage/ErrorPage.jsx";
 import UserProvider from "./Context/UserContext.jsx";
 import { Court } from "./pages/Court/Court.jsx";
+import Reserves from "./pages/Reserves/Reserves.jsx";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/quadra",
         element: <Court />,
+      },
+      {
+        path: "/reservas/:idCourt",
+        element: <Reserves />,
       },
     ],
   },

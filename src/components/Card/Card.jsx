@@ -10,6 +10,7 @@ import {
   Warning,
 } from "./CardStyled";
 import { deleteReserve } from "../../services/reserveServices";
+import { getColor } from "../CourtCard/CourtCard";
 
 export function Card(props) {
   const [quadra, setQuadra] = useState();
@@ -51,28 +52,15 @@ export function Card(props) {
     fetchCourt();
   }, [props.court]);
   // 6BA6FF
-  function getColor(quadraName) {
-    switch (quadraName) {
-      case "Quadra 1":
-        return "#4CD6F6";
-      case "Quadra 2":
-        return "#C14CF6";
-      case "Quadra 3":
-        return "#F66C4C";
-      case "Quadra 4":
-        return "#81F64C";
-      case "Área 1":
-        return "#DAC87F";
-      case "Área 2":
-        return "#7F91DA";
-      default:
-        return "#eee";
-    }
-  }
 
   return (
     <>
-      <CardStyled color={getColor(quadra)}>
+      <CardStyled
+        reserve={props.reserve}
+        isEven={props.isEven}
+        color={getColor(quadra)}
+        animationDelay={`${props.index * 0.1}s`}
+      >
         <h3>{props.name}</h3>
         <p>{formatDateTime(props.date)}</p>
         <span>{quadra}</span>

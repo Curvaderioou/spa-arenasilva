@@ -42,7 +42,7 @@ export function Navbar() {
           <Link to="/">
             <img src="/public/logo.png" alt="Arena Silva" id="logo" />
           </Link>
-          {Cookies.get("token") == undefined ? (
+          {Cookies.get("token") == undefined || !user ? (
             <Link to="/auth">
               <Button type="button" text="Entrar"></Button>
             </Link>

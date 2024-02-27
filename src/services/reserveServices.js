@@ -13,6 +13,15 @@ export async function getAllReserves() {
   }
 }
 
+export async function getAllReservesOnDate(date) {
+  try {
+    const response = await axios.get(`${baseURL}/reserve/date?date=${date}`);
+    return response;
+  } catch (e) {
+    return e.message;
+  }
+}
+
 export async function getAllReserverByCourtId(id) {
   try {
     const response = await axios.get(`${baseURL}/reserve/byCourtId/${id}`);

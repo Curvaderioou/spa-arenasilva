@@ -13,6 +13,10 @@ export const CardStyled = styled.article`
   border: 2px solid var(--dark);
   padding: 20px;
   border-radius: 10px;
+  transform: translate(${(props) => (props.isEven ? "50%" : "-50%")});
+  animation: cima 0.5s forwards;
+  animation-delay: ${(props) => props.animationDelay};
+  opacity: 0;
   h3 {
     margin-right: auto;
     font-size: 1.5rem;
@@ -21,6 +25,7 @@ export const CardStyled = styled.article`
     font-size: 1.3rem;
   }
   & > span {
+    display: ${(props) => (props.reserve ? "none" : "inherit")};
     position: absolute;
     left: 10px;
     border-radius: 3px;
@@ -31,6 +36,13 @@ export const CardStyled = styled.article`
     font-weight: 700;
     padding: 3px 6px;
     border: 2px solid var(--dark);
+  }
+
+  @keyframes cima {
+    100% {
+      transform: translate(0);
+      opacity: 1;
+    }
   }
 `;
 

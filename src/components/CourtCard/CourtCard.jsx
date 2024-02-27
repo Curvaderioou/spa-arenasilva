@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { Button } from "../Button/Button";
@@ -12,6 +14,26 @@ import {
   createReserve,
   findReserveByCourtId,
 } from "../../services/reserveServices";
+import { useNavigate } from "react-router-dom";
+
+export function getColor(name) {
+  switch (name) {
+    case "Quadra 1":
+      return "#4CD6F6";
+    case "Quadra 2":
+      return "#C14CF6";
+    case "Quadra 3":
+      return "#F66C4C";
+    case "Quadra 4":
+      return "#81F64C";
+    case "Área 1":
+      return "#DAC87F";
+    case "Área 2":
+      return "#7F91DA";
+    default:
+      return "#eee";
+  }
+}
 
 export function CourtCard(props) {
   const [mostraForm, setMostraForm] = useState(false);
@@ -22,24 +44,7 @@ export function CourtCard(props) {
   const [reservedTimes, setReservedTimes] = useState([]);
   const [availableOptions, setAvailableOptions] = useState([]);
 
-  function getColor(name) {
-    switch (name) {
-      case "Quadra 1":
-        return "#4CD6F6";
-      case "Quadra 2":
-        return "#C14CF6";
-      case "Quadra 3":
-        return "#F66C4C";
-      case "Quadra 4":
-        return "#81F64C";
-      case "Área 1":
-        return "#DAC87F";
-      case "Área 2":
-        return "#7F91DA";
-      default:
-        return "#eee";
-    }
-  }
+  const navigate = useNavigate();
 
   function mostra() {
     setMostraForm(!mostraForm);
@@ -110,6 +115,10 @@ export function CourtCard(props) {
       );
     });
     setAvailableOptions(availableOptions);
+  }
+
+  function sendReserves() {
+    navigate("/reservas/" + props.id);
   }
 
   async function handleForm(event) {
@@ -202,7 +211,7 @@ export function CourtCard(props) {
         <p>{countReserves}</p>
         <CourtButtons>
           <Button onclick={mostra} text="Reservar" />
-          <Button text="Ver" />
+          <Button onclick={sendReserves} text="Ver" />
         </CourtButtons>
       </CourtCardStyled>
       {mostraForm ? (
