@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { findCourtById } from "../../services/courtService";
@@ -7,14 +8,16 @@ import {
   MostraDelete,
   Options,
   Success,
+  UpdateForm,
   Warning,
 } from "./CardStyled";
-import { deleteReserve } from "../../services/reserveServices";
+import { deleteReserve, updateReserve } from "../../services/reserveServices";
 import { getColor } from "../CourtCard/CourtCard";
-
 export function Card(props) {
   const [quadra, setQuadra] = useState();
   const [mostraDelete, setMostraDelete] = useState(false);
+  const [mostraUpdate, setMostraUpdate] = useState(false);
+  const [reserve, setReserve] = useState({});
 
   function formatDateTime(date) {
     const formattedDate = new Date(date);
@@ -38,6 +41,26 @@ export function Card(props) {
     await deleteReserve(props.id);
   }
 
+  function handleUpdateClicked() {
+    setMostraUpdate(!mostraUpdate);
+  }
+
+  async function handleUpdate(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+    const client = data["client"].trim();
+
+    if (!client) {
+      alert("Por favor, insira o nome do cliente.");
+      return;
+    }
+
+    const response = await updateReserve(props.id, client);
+    setReserve(response.reserveUpdated);
+    handleUpdateClicked();
+  }
+
   useEffect(() => {
     async function fetchCourt() {
       try {
@@ -50,7 +73,7 @@ export function Card(props) {
     }
 
     fetchCourt();
-  }, [props.court]);
+  }, [props.court, reserve]);
   // 6BA6FF
 
   return (
@@ -61,14 +84,28 @@ export function Card(props) {
         color={getColor(quadra)}
         animationDelay={`${props.index * 0.1}s`}
       >
-        <h3>{props.name}</h3>
+        {mostraUpdate ? (
+          <UpdateForm onSubmit={handleUpdate}>
+            <input
+              type="text"
+              defaultValue={reserve.client || props.name}
+              name="client"
+            />
+            <Success type="submit">
+              <i className="fa-solid fa-check"></i>
+            </Success>
+          </UpdateForm>
+        ) : (
+          <h3>{reserve.client || props.name}</h3>
+        )}
+
         <p>{formatDateTime(props.date)}</p>
         <span>{quadra}</span>
         <Options>
           <Danger onClick={handleDeleteClicked}>
             <i className="fa-solid fa-trash"></i>
           </Danger>
-          <Warning>
+          <Warning onClick={handleUpdateClicked}>
             <i className="fa-solid fa-pencil"></i>
           </Warning>
           <Success>
@@ -76,14 +113,14 @@ export function Card(props) {
           </Success>
         </Options>
       </CardStyled>
-      {mostraDelete ? (
+      {mostraDelete && (
         <MostraDelete>
           <h2>Deseja excluir a reserva de {props.name}?</h2>
           <h3>Essa ação não pode ser desfeita!</h3>
           <button onClick={handleDeleteReserve}>Excluir</button>
           <button onClick={handleDeleteClicked}>Voltar</button>
         </MostraDelete>
-      ) : null}
+      )}
     </>
   );
 }

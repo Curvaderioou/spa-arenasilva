@@ -114,3 +114,15 @@ export const MostraDelete = styled.div`
     margin: 10px 0;
   }
 `;
+
+export const UpdateForm = styled.form`
+  display: flex;
+  align-items: end;
+  gap: 5px;
+  input {
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+    box-shadow: 0 -2px 0 var(--dark) inset;
+  }
+`;

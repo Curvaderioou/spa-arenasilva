@@ -96,6 +96,7 @@ export default function Home() {
               name={item.client}
               date={item.reservedDate}
               court={item.court}
+              desc={item.description}
               id={item.id}
               isEven={index % 2 === 0}
               index={index}

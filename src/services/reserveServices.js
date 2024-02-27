@@ -73,3 +73,23 @@ export async function findReserveByCourtId(id) {
     return e.message;
   }
 }
+
+export async function updateReserve(id, data) {
+  try {
+    const response = await axios.patch(
+      `${baseURL}/reserve/update/${id}`,
+      { client: data },
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      }
+    );
+
+    const updatedReserve = response.data;
+
+    return updatedReserve;
+  } catch (error) {
+    return error;
+  }
+}
