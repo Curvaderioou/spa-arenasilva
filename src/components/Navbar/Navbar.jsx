@@ -84,7 +84,7 @@ export function Navbar() {
             </InputNav>
           </form>
           <Link to="/">
-            <img src="/public/logo.png" alt="Arena Silva" id="logo" />
+            <img src="../../../public/logo.png" alt="Arena Silva" id="logo" />
           </Link>
           {Cookies.get("token") == undefined || !user ? (
             <Link to="/auth">
