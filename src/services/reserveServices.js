@@ -1,8 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-// const baseURL = "https://api-arena-back.onrender.com";
-const baseURL = "http://localhost:3001";
+const baseURL = "https://api-arena-back.onrender.com";
+// const baseURL = "http://localhost:3001";
 
 export async function getAllReserves() {
   try {
@@ -91,5 +91,16 @@ export async function updateReserve(id, data) {
     return updatedReserve;
   } catch (error) {
     return error;
+  }
+}
+
+export async function searchReserveByClient(client) {
+  try {
+    const response = await axios.get(
+      `${baseURL}/reserve/search?client=${client}`
+    );
+    return response;
+  } catch (e) {
+    return e;
   }
 }

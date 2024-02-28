@@ -239,10 +239,7 @@ export function CourtCard(props) {
               ))}
             </select>
           </div>
-          <div>
-            <label htmlFor="desc">Descrição (opcional)</label>
-            {/* <textarea name="desc"></textarea> */}
-          </div>
+          <div>{/* <textarea name="desc"></textarea> */}</div>
           <button type="submit">Reservar</button>
           <p onClick={mostra}>Voltar</p>
         </Reservar>

@@ -42,8 +42,9 @@ export default function Reserves() {
           key={item.id}
           name={item.client}
           date={item.reservedDate}
-          id={item.id}
+          court={item.court}
           reserve={true}
+          id={item.id}
           isEven={index % 2 === 0}
           index={index}
         />

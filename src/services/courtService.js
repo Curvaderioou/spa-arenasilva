@@ -1,8 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-// const baseURL = "https://api-arena-back.onrender.com";
-const baseURL = "http://localhost:3001";
+const baseURL = "https://api-arena-back.onrender.com";
+// const baseURL = "http://localhost:3001";
 
 export async function getAllCourts() {
   try {

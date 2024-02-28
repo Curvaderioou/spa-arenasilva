@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { findCourtById } from "../../services/courtService";
 import {
   CardStyled,
@@ -13,20 +14,24 @@ import {
 } from "./CardStyled";
 import { deleteReserve, updateReserve } from "../../services/reserveServices";
 import { getColor } from "../CourtCard/CourtCard";
+import { createArchive } from "../../services/archives.service";
+
 export function Card(props) {
   const [quadra, setQuadra] = useState();
   const [mostraDelete, setMostraDelete] = useState(false);
   const [mostraUpdate, setMostraUpdate] = useState(false);
   const [reserve, setReserve] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [past, setPast] = useState(false);
+  const [present, setPresent] = useState(false);
+  const cardRef = useRef();
 
   function formatDateTime(date) {
     const formattedDate = new Date(date);
     const day = formattedDate.getDate();
-    const month = formattedDate.getMonth() + 1; // Os meses em JavaScript são indexados a partir de zero
+    const month = formattedDate.getMonth() + 1;
     const hour = formattedDate.getHours();
     const minutes = formattedDate.getMinutes();
-
-    // Adicionando zeros à esquerda para garantir que as partes da data tenham dois dígitos
     const formattedDay = String(day).padStart(2, "0");
     const formattedMonth = String(month).padStart(2, "0");
 
@@ -35,14 +40,12 @@ export function Card(props) {
 
   function handleDeleteClicked() {
     setMostraDelete(!mostraDelete);
-  }
-
-  async function handleDeleteReserve() {
-    await deleteReserve(props.id);
+    setIsModalOpen(!isModalOpen);
   }
 
   function handleUpdateClicked() {
     setMostraUpdate(!mostraUpdate);
+    setIsModalOpen(!isModalOpen);
   }
 
   async function handleUpdate(event) {
@@ -61,6 +64,51 @@ export function Card(props) {
     handleUpdateClicked();
   }
 
+  async function handleDeleteReserve() {
+    await deleteReserve(props.id);
+    setReserve(false);
+    setMostraDelete(false);
+    setIsModalOpen(false); // Fecha o modal após excluir a reserva
+  }
+
+  function checkDate() {
+    const reservedDate = new Date(props.date);
+    const rDay = reservedDate.getDay();
+    const rHour = reservedDate.getHours();
+    const dataAtual = new Date();
+    const aDay = dataAtual.getDay();
+    const aHour = dataAtual.getHours();
+
+    if (rDay <= aDay && rHour < aHour) {
+      setPast(true);
+      setPresent(false);
+    } else if (rDay == aDay && rHour == aHour) {
+      setPresent(true);
+    }
+  }
+
+  async function handleArchiveReserve() {
+    const reservedDate = new Date(props.date);
+    try {
+      await createArchive(props.name, reservedDate, props.court);
+      handleDeleteReserve();
+    } catch (e) {
+      return e;
+    }
+  }
+
+  useEffect(() => {
+    // Atualizar o checkDate a cada hora
+    const intervalId = setInterval(() => {
+      checkDate();
+    }, 10000); // 3600000 milissegundos = 1 hora
+
+    // Limpar o intervalo quando o componente é desmontado
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
   useEffect(() => {
     async function fetchCourt() {
       try {
@@ -71,10 +119,27 @@ export function Card(props) {
         console.log(error);
       }
     }
-
     fetchCourt();
+    checkDate();
   }, [props.court, reserve]);
-  // 6BA6FF
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        cardRef.current &&
+        !cardRef.current.contains(event.target) &&
+        !isModalOpen
+      ) {
+        setMostraDelete(false);
+        setMostraUpdate(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isModalOpen]);
 
   return (
     <>
@@ -83,7 +148,13 @@ export function Card(props) {
         isEven={props.isEven}
         color={getColor(quadra)}
         animationDelay={`${props.index * 0.1}s`}
+        ref={cardRef}
+        reserveFalse={reserve}
+        archived={props.archived}
+        past={past}
+        present={present}
       >
+        {present && <i className="fa-regular fa-clock"></i>}
         {mostraUpdate ? (
           <UpdateForm onSubmit={handleUpdate}>
             <input
@@ -101,16 +172,22 @@ export function Card(props) {
 
         <p>{formatDateTime(props.date)}</p>
         <span>{quadra}</span>
-        <Options>
-          <Danger onClick={handleDeleteClicked}>
-            <i className="fa-solid fa-trash"></i>
-          </Danger>
-          <Warning onClick={handleUpdateClicked}>
-            <i className="fa-solid fa-pencil"></i>
-          </Warning>
-          <Success>
-            <i className="fa-solid fa-check"></i>
-          </Success>
+        <Options archived={props.archived}>
+          {!past && !present && (
+            <>
+              <Danger onClick={handleDeleteClicked}>
+                <i className="fa-solid fa-trash"></i>
+              </Danger>
+              <Warning onClick={handleUpdateClicked}>
+                <i className="fa-solid fa-pencil"></i>
+              </Warning>
+            </>
+          )}
+          {(past || present) && (
+            <Success onClick={handleArchiveReserve}>
+              <i className="fa-solid fa-check"></i>
+            </Success>
+          )}
         </Options>
       </CardStyled>
       {mostraDelete && (

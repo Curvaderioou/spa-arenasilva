@@ -11,6 +11,10 @@ export const CourtCardStyled = styled.article`
   font-size: 1.4rem;
   font-weight: 700;
   position: relative;
+  transition: all.3s;
+  opacity: 0;
+  transform: translate(0, 50%);
+  animation: anima 0.5s forwards;
   &:hover {
     div {
       opacity: 1;
@@ -23,6 +27,13 @@ export const CourtCardStyled = styled.article`
     left: 10px;
     top: 0px;
     font-weight: 400;
+  }
+
+  @keyframes anima {
+    100% {
+      transform: translate(0);
+      opacity: 1;
+    }
   }
 `;
 

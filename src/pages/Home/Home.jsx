@@ -1,19 +1,23 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Card } from "../../components/Card/Card";
 import { FormCalendar, HomeBody, HomeHeader } from "./HomeStyled.jsx";
 import {
   getAllReserves,
   getAllReservesOnDate,
+  deleteReserve as deleteReserveService,
 } from "../../services/reserveServices.js";
 import { Button } from "../../components/Button/Button.jsx";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import { UserContext } from "../../Context/UserContext.jsx";
+import { userLogged } from "../../services/userServices.js";
 
 export default function Home() {
+  const { user, setUser } = useContext(UserContext);
   const [reserve, setReserve] = useState([]);
   const [emptyReserve, setEmptyReserve] = useState(false);
   const [calendar, setCalendar] = useState(false);
-  const [denovo, setDenovo] = useState(false);
 
   async function findReserve() {
     const reserveResponse = await getAllReserves();
@@ -22,13 +26,10 @@ export default function Home() {
       reserveResponse.data.results.length === 0
     ) {
       setEmptyReserve(true);
+    } else {
+      setEmptyReserve(false);
     }
     setReserve(reserveResponse.data.results);
-  }
-
-  function handleFindReserve() {
-    showCalendar();
-    setDenovo(!denovo);
   }
 
   async function handleCalendar(event) {
@@ -45,18 +46,44 @@ export default function Home() {
     setReserve(reservations);
   }
 
+  async function handleFindReserve() {
+    showCalendar();
+    await findReserve(); // Carregar novamente as reservas ao clicar em "Mostrar Todos"
+  }
+
   function showCalendar() {
     setCalendar(!calendar);
+  }
+  async function findUserLogged() {
+    try {
+      const response = await userLogged();
+      setUser(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {
     findReserve();
-  }, [denovo]);
+    findUserLogged();
+
+    // Atualizar as reservas a cada hora
+    const intervalId = setInterval(() => {
+      findReserve();
+    }, 3600000); // 3600000 milissegundos = 1 hora
+
+    // Limpar o intervalo quando o componente é desmontado
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   return (
     <>
       <HomeHeader>
-        <Link to="/quadra">
+        <Link
+          to={Cookies.get("token") === undefined || !user ? "/auth" : "/quadra"}
+        >
           <Button text="Novo" />
         </Link>
         {!calendar ? (
@@ -86,7 +113,7 @@ export default function Home() {
       </HomeHeader>
       <HomeBody>
         {emptyReserve ? (
-          <h2 style={{ fontSize: 2 + "rem", textAlign: "center" }}>
+          <h2 style={{ fontSize: "2rem", textAlign: "center" }}>
             Não há Reservas
           </h2>
         ) : (

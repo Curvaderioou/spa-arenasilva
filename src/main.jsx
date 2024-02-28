@@ -9,6 +9,8 @@ import { ErrorPage } from "./pages/ErrorPage/ErrorPage.jsx";
 import UserProvider from "./Context/UserContext.jsx";
 import { Court } from "./pages/Court/Court.jsx";
 import Reserves from "./pages/Reserves/Reserves.jsx";
+import Search from "./pages/Search/Search.jsx";
+import Archives from "./pages/Archives/Archives.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,14 @@ const router = createBrowserRouter([
       {
         path: "/reservas/:idCourt",
         element: <Reserves />,
+      },
+      {
+        path: "/search/:client",
+        element: <Search />,
+      },
+      {
+        path: "/arquivados",
+        element: <Archives />,
       },
     ],
   },

@@ -1,15 +1,30 @@
 import styled from "styled-components";
 
 export const CardStyled = styled.article`
-  display: grid;
+  display: ${(props) => (props.reserveFalse ? "grid" : "none")};
   grid-template-columns: 1fr 1fr 1fr;
   justify-items: center;
   align-items: center;
   position: relative;
   gap: 30px;
   width: 100%;
-  /* box-shadow: 0 0 4px 1px #d1d1d1; */
-  background-color: var(--light);
+  & > i {
+    position: absolute;
+    right: -30px;
+  }
+  background-color: ${(props) => {
+    if (props.archived) {
+      return "#3fa054"; // Retorna a cor verde se for arquivado
+    } else if (props.past) {
+      return "#bebebe"; // Retorna a cor cinza se for passado
+    } else if (props.present) {
+      return "var(--main)"; // Retorna a cor principal se for presente
+    } else {
+      return "transparent"; // Retorna uma cor transparente como padrão
+    }
+  }};
+
+  color: ${(props) => (props.archived ? "var(--light)" : "var(--dark)")};
   border: 2px solid var(--dark);
   padding: 20px;
   border-radius: 10px;
@@ -34,7 +49,7 @@ export const CardStyled = styled.article`
     background-color: ${(props) => props.color};
     color: var(--dark);
     font-weight: 700;
-    padding: 3px 6px;
+    padding: 2px 6px;
     border: 2px solid var(--dark);
   }
 
@@ -47,7 +62,7 @@ export const CardStyled = styled.article`
 `;
 
 export const Options = styled.div`
-  display: flex;
+  display: ${(props) => (props.archived ? "none" : "flex")};
   gap: 10px;
   margin-left: auto;
 `;
@@ -75,6 +90,7 @@ export const Warning = styled.button`
 `;
 
 export const Success = styled.button`
+  display: ${(props) => (props.present ? "block" : "none")};
   background-color: #4eff48;
   width: 30px;
   height: 30px;
