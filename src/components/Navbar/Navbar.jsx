@@ -22,6 +22,7 @@ export function Navbar() {
   const { user, setUser } = useContext(UserContext);
   const [arquivado, setArquivado] = useState(false);
   const [quadra, setQuadra] = useState(false);
+  const [main, setMain] = useState(false);
   const location = useLocation();
 
   function verifyArchive() {
@@ -29,6 +30,9 @@ export function Navbar() {
   }
   function verifyCourt() {
     setQuadra(location.pathname === "/quadra");
+  }
+  function verifyMain() {
+    setMain(location.pathname === "/quadra");
   }
 
   const {
@@ -68,6 +72,7 @@ export function Navbar() {
     // Verificar se a localização atual corresponde à rota "/arquivados"
     setArquivado(location.pathname === "/arquivados");
     setQuadra(location.pathname === "/quadra");
+    setMain(location.pathname === "/");
   }, [location]);
 
   return (
@@ -88,15 +93,22 @@ export function Navbar() {
             <img src={logo} alt="Arena Silva" id="logo" />
           </Link>
           {Cookies.get("token") == undefined || !user ? (
-            <Link to="/auth">
+            <Link to="/auth" id="loginBtn">
               <Button type="button" text="Entrar"></Button>
             </Link>
           ) : (
-            <button onClick={signout}>
+            <button onClick={signout} id="loginBtn">
               <i className="fa-solid fa-right-from-bracket"></i>
             </button>
           )}
           <NavBtnContainer>
+            <Link
+              to={Cookies.get("token") == undefined || !user ? "/auth" : "/"}
+              className={main ? "arquivado" : ""}
+              onClick={verifyMain}
+            >
+              Todos
+            </Link>
             <Link
               to={
                 Cookies.get("token") == undefined || !user

@@ -35,6 +35,14 @@ export const CourtCardStyled = styled.article`
       opacity: 1;
     }
   }
+
+  @media only screen and (max-width: 440px) {
+    padding-bottom: 70px;
+    &:hover {
+      background-color: ${(props) => props.color};
+      color: var(--dark);
+    }
+  }
 `;
 
 export const CourtButtons = styled.div`
@@ -48,6 +56,15 @@ export const CourtButtons = styled.div`
   transform: translate(-50%, -50%);
   transition: all.3s;
   opacity: 0;
+  @media only screen and (max-width: 440px) {
+    background-color: #d3d3d3b3;
+    width: 100%;
+    padding: 10px;
+    opacity: 1;
+    top: inherit;
+    bottom: 0;
+    transform: translate(-50%, 0);
+  }
 `;
 
 export const Reservar = styled.form`
@@ -101,7 +118,10 @@ export const Confirmation = styled.div`
   padding: 40px 20px;
   border-radius: 3px;
   font-size: 1.5rem;
+  max-width: 400px;
+  width: 85%;
   position: fixed;
+  text-align: center;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -115,6 +135,7 @@ export const ErrorForm = styled.div`
   border-radius: 3px;
   font-size: 1.5rem;
   position: fixed;
+  text-align: center;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);

@@ -24,6 +24,7 @@ export function Card(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [past, setPast] = useState(false);
   const [present, setPresent] = useState(false);
+  const [today, setToday] = useState(false);
   const cardRef = useRef();
 
   function formatDateTime(date) {
@@ -79,7 +80,13 @@ export function Card(props) {
     const aDay = dataAtual.getDay();
     const aHour = dataAtual.getHours();
 
-    if (rDay <= aDay && rHour < aHour) {
+    if (rDay == aDay) {
+      setToday(true);
+    } else {
+      setToday(false);
+    }
+
+    if (rDay < aDay) {
       setPast(true);
       setPresent(false);
     } else if (rDay == aDay && rHour == aHour) {
@@ -153,6 +160,7 @@ export function Card(props) {
         archived={props.archived}
         past={past}
         present={present}
+        today={today}
       >
         {present && <i className="fa-regular fa-clock"></i>}
         {mostraUpdate ? (
@@ -173,15 +181,13 @@ export function Card(props) {
         <p>{formatDateTime(props.date)}</p>
         <span>{quadra}</span>
         <Options archived={props.archived}>
+          <Danger onClick={handleDeleteClicked}>
+            <i className="fa-solid fa-trash"></i>
+          </Danger>
           {!past && !present && (
-            <>
-              <Danger onClick={handleDeleteClicked}>
-                <i className="fa-solid fa-trash"></i>
-              </Danger>
-              <Warning onClick={handleUpdateClicked}>
-                <i className="fa-solid fa-pencil"></i>
-              </Warning>
-            </>
+            <Warning onClick={handleUpdateClicked}>
+              <i className="fa-solid fa-pencil"></i>
+            </Warning>
           )}
           {(past || present) && (
             <Success onClick={handleArchiveReserve}>

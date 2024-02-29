@@ -32,6 +32,25 @@ export const Container = styled.div`
   justify-items: center;
   align-items: center;
   margin: 0 auto;
+  @media only screen and (min-width: 471px) and (max-width: 780px) {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+  }
+  @media only screen and (max-width: 470px) {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr;
+    form {
+      grid-row: 3;
+      margin-bottom: 20px;
+    }
+    #loginBtn {
+      position: absolute;
+      right: 10px;
+      top: 40px;
+    }
+  }
 `;
 
 export const ErrorSpan = styled.span`
@@ -80,9 +99,10 @@ export const NavBtnContainer = styled.div`
   position: absolute;
   bottom: 0;
   display: flex;
-  gap: 30px;
+  gap: 5px;
   align-items: center;
   justify-content: center;
+  width: 100%;
   a {
     display: flex;
     font-size: 1.1rem;

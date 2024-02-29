@@ -19,6 +19,8 @@ export const CardStyled = styled.article`
       return "#bebebe"; // Retorna a cor cinza se for passado
     } else if (props.present) {
       return "var(--main)"; // Retorna a cor principal se for presente
+    } else if (props.today) {
+      return "var(--sec)"; // Retorna a cor principal se for presente
     } else {
       return "transparent"; // Retorna uma cor transparente como padrão
     }
@@ -57,6 +59,21 @@ export const CardStyled = styled.article`
     100% {
       transform: translate(0);
       opacity: 1;
+    }
+  }
+
+  @media only screen and (max-width: 530px) {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px 10px;
+    p {
+      font-size: 1.1rem;
+      text-align: center;
+    }
+    h3 {
+      margin-right: auto;
+      font-size: 1.2rem;
     }
   }
 `;
@@ -105,6 +122,8 @@ export const MostraDelete = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
+  width: 80%;
+  max-width: 500px;
   align-items: center;
   justify-content: center;
   border: 2px solid var(--dark);
@@ -140,5 +159,10 @@ export const UpdateForm = styled.form`
     outline: none;
     font-size: 1.5rem;
     box-shadow: 0 -2px 0 var(--dark) inset;
+  }
+  @media only screen and (max-width: 530px) {
+    input {
+      font-size: 1rem;
+    }
   }
 `;

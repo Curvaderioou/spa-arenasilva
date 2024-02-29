@@ -27,6 +27,8 @@ export const HomeBody = styled.section`
   display: grid;
   gap: 45px;
   margin: 0 auto 40px;
+  position: relative;
+  padding: 0 10px;
   a {
     margin: 30px auto 0;
     max-width: fit-content;
@@ -63,5 +65,41 @@ export const FormCalendar = styled.form`
       transform: translate(0);
       opacity: 1;
     }
+  }
+`;
+
+export const Legend = styled.section`
+  position: absolute;
+  display: grid;
+  gap: 15px;
+  padding: 10px;
+  left: 0;
+  top: 230px;
+  @media only screen and (max-width: 1000px) {
+    display: none;
+  }
+`;
+
+export const ALegend = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  div {
+    height: 15px;
+    width: 15px;
+    border: 1px solid var(--dark);
+  }
+  #azul {
+    background-color: var(--main);
+  }
+  #amarelo {
+    background-color: var(--sec);
+  }
+  #cinza {
+    background-color: #bebebe;
+  }
+  #verde {
+    background-color: #3fa054;
   }
 `;

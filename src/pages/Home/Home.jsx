@@ -2,7 +2,13 @@
 /* eslint-disable no-unused-vars */
 import { useContext, useEffect, useState } from "react";
 import { Card } from "../../components/Card/Card";
-import { FormCalendar, HomeBody, HomeHeader } from "./HomeStyled.jsx";
+import {
+  ALegend,
+  FormCalendar,
+  HomeBody,
+  HomeHeader,
+  Legend,
+} from "./HomeStyled.jsx";
 import {
   getAllReserves,
   getAllReservesOnDate,
@@ -81,6 +87,28 @@ export default function Home() {
 
   return (
     <>
+      <Legend>
+        <ALegend>
+          <div id="azul"></div>
+          <p>Em Ação</p>
+        </ALegend>
+        <ALegend>
+          <div id="amarelo"></div>
+          <p>Reservas para hoje</p>
+        </ALegend>
+        <ALegend>
+          <div id="cinza"></div>
+          <p>Passado</p>
+        </ALegend>
+        <ALegend>
+          <div id="verde"></div>
+          <p>Concluído</p>
+        </ALegend>
+        <ALegend>
+          <div id="branco"></div>
+          <p>Aberto</p>
+        </ALegend>
+      </Legend>
       <HomeHeader>
         <Link
           to={Cookies.get("token") === undefined || !user ? "/auth" : "/quadra"}
