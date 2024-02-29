@@ -16,7 +16,7 @@ import { UserContext } from "../../Context/UserContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { searchSchema } from "../../schemas/searchSchema";
-import logo from "../../assets/logo.png";
+import logo from "../../images/logo.png";
 
 export function Navbar() {
   const { user, setUser } = useContext(UserContext);
