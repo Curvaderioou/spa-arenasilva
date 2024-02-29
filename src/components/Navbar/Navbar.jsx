@@ -16,6 +16,7 @@ import { UserContext } from "../../Context/UserContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { searchSchema } from "../../schemas/searchSchema";
+import logo from "../../assets/logo.png";
 
 export function Navbar() {
   const { user, setUser } = useContext(UserContext);
@@ -84,7 +85,7 @@ export function Navbar() {
             </InputNav>
           </form>
           <Link to="/">
-            <img src="../../../public/logo.png" alt="Arena Silva" id="logo" />
+            <img src={logo} alt="Arena Silva" id="logo" />
           </Link>
           {Cookies.get("token") == undefined || !user ? (
             <Link to="/auth">
