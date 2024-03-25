@@ -15,10 +15,10 @@ export const CardStyled = styled.article`
   background-color: ${(props) => {
     if (props.archived) {
       return "#3fa054"; // Retorna a cor verde se for arquivado
-    } else if (props.past) {
-      return "#bebebe"; // Retorna a cor cinza se for passado
     } else if (props.present) {
       return "var(--main)"; // Retorna a cor principal se for presente
+    } else if (props.past) {
+      return "#bebebe"; // Retorna a cor cinza se for passado
     } else if (props.today) {
       return "var(--sec)"; // Retorna a cor principal se for presente
     } else {

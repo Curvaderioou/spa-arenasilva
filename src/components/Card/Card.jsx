@@ -74,24 +74,38 @@ export function Card(props) {
 
   function checkDate() {
     const reservedDate = new Date(props.date);
-    const rDay = reservedDate.getDay();
-    const rHour = reservedDate.getHours();
-    const dataAtual = new Date();
-    const aDay = dataAtual.getDay();
-    const aHour = dataAtual.getHours();
+    const currentDate = new Date();
 
-    if (rDay == aDay) {
-      setToday(true);
-    } else {
-      setToday(false);
+    // Definindo a data e hora da reserva
+    reservedDate.setSeconds(0); // Ignorando os segundos
+    reservedDate.setMilliseconds(0); // Ignorando os milissegundos
+
+    let isToday = false;
+    let isPresent = false;
+    let isPast = false;
+
+    // Comparando as datas
+    if (
+      reservedDate.getFullYear() === currentDate.getFullYear() &&
+      reservedDate.getMonth() === currentDate.getMonth() &&
+      reservedDate.getDate() === currentDate.getDate()
+    ) {
+      isToday = true;
+
+      // Comparando as horas apenas se a data for a mesma
+      if (reservedDate.getHours() === currentDate.getHours()) {
+        isPresent = true;
+      }
     }
 
-    if (rDay < aDay) {
-      setPast(true);
-      setPresent(false);
-    } else if (rDay == aDay && rHour == aHour) {
-      setPresent(true);
+    // Verificando se a reserva está no passado
+    if (reservedDate < currentDate) {
+      isPast = true;
     }
+
+    setToday(isToday);
+    setPresent(isPresent);
+    setPast(isPast);
   }
 
   async function handleArchiveReserve() {
