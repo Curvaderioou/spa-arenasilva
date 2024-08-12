@@ -156,6 +156,7 @@ export default function Home() {
               id={item.id}
               isEven={index % 2 === 0}
               index={index}
+              user={Cookies.get("token") === undefined ? false : true}
             />
           ))
         )}

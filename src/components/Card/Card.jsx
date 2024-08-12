@@ -194,21 +194,23 @@ export function Card(props) {
 
         <p>{formatDateTime(props.date)}</p>
         <span>{quadra}</span>
-        <Options archived={props.archived}>
-          <Danger onClick={handleDeleteClicked}>
-            <i className="fa-solid fa-trash"></i>
-          </Danger>
-          {!past && !present && (
-            <Warning onClick={handleUpdateClicked}>
-              <i className="fa-solid fa-pencil"></i>
-            </Warning>
-          )}
-          {(past || present) && (
-            <Success onClick={handleArchiveReserve}>
-              <i className="fa-solid fa-check"></i>
-            </Success>
-          )}
-        </Options>
+        {props.user && (
+          <Options archived={props.archived}>
+            <Danger onClick={handleDeleteClicked}>
+              <i className="fa-solid fa-trash"></i>
+            </Danger>
+            {!past && !present && (
+              <Warning onClick={handleUpdateClicked}>
+                <i className="fa-solid fa-pencil"></i>
+              </Warning>
+            )}
+            {(past || present) && (
+              <Success onClick={handleArchiveReserve}>
+                <i className="fa-solid fa-check"></i>
+              </Success>
+            )}
+          </Options>
+        )}
       </CardStyled>
       {mostraDelete && (
         <MostraDelete>
